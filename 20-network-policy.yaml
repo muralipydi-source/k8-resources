@@ -21,3 +21,58 @@ spec:
     - protocol: TCP
       port: 27017
 
+
+
+
+# what is NetworkPolicy in kubernetes
+
+# NetworkPolicy in Kubernetes is a way to control network traffic between Pods—basically, it’s a firewall for pods.
+
+# By default, all pods can talk to all other pods in a cluster. A NetworkPolicy lets you say:
+
+# “Only these pods can talk to those pods, on these ports.”
+
+# What NetworkPolicy controls
+
+# It can control:
+
+# Ingress → incoming traffic to a pod
+
+# Egress → outgoing traffic from a pod
+
+# You can restrict traffic based on:
+
+# Pod labels
+
+# Namespace labels
+
+# IP blocks
+
+# Ports & protocols (TCP/UDP)
+
+# Simple example
+
+# Allow only pods with label app=frontend to access pods with app=backend on port 80:
+
+# apiVersion: networking.k8s.io/v1
+# kind: NetworkPolicy
+# metadata:
+#   name: allow-frontend
+#   namespace: default
+# spec:
+#   podSelector:
+#     matchLabels:
+#       app: backend
+#   policyTypes:
+#   - Ingress
+#   ingress:
+#   - from:
+#     - podSelector:
+#         matchLabels:
+#           app: frontend
+#     ports:
+#     - protocol: TCP
+#       port: 80
+
+# Meaning:
+# Only frontend pods can reach backend pods on port 80.
