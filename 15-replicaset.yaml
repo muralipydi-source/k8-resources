@@ -2,13 +2,14 @@ apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
   name: nginx
+  namespace: roboshop
   # replica set labels
   labels:
     purpose: rs-demo
     project: roboshop
     app: nginx
 spec:
-  replicas: 2
+  replicas: 3
   # These are the labels replica set use to create pod replicas, this should match pod labels
   selector:
     matchLabels:
