@@ -19,3 +19,74 @@ spec:
         port: 80
       initialDelaySeconds: 40
       periodSeconds: 3
+
+
+
+
+# This is a Kubernetes Pod manifest that defines a container with health checks (very important concept for interviews 👍).
+
+# 🧠 What This YAML Does
+
+# It creates a Pod running NGINX with:
+
+# ✅ Liveness Probe → checks if container is alive
+# ✅ Readiness Probe → checks if container is ready to serve traffic
+# 🔍 Step-by-Step Explanation
+# 🔹 Basic Info
+# apiVersion: v1
+# kind: Pod
+
+# 👉 Creates a Pod (basic Kubernetes object)
+
+# metadata:
+#   name: liveness-http
+#   labels:
+#     test: liveness
+
+# 👉 Pod name = liveness-http
+# 👉 Label used for identification
+
+# 🔹 Container Definition
+# containers:
+# - name: liveness
+#   image: nginx
+
+# 👉 Runs NGINX web server inside the pod
+
+# ❤️ Liveness Probe (Is container alive?)
+# livenessProbe:
+#   tcpSocket:
+#     port: 80
+#   initialDelaySeconds: 30
+#   periodSeconds: 10
+# ✅ Meaning
+# After 30 seconds, Kubernetes starts checking
+# Every 10 seconds, it tries to connect to port 80 (TCP)
+# 🔥 Behavior
+# If TCP check fails repeatedly
+# 👉 Kubernetes restarts the container
+
+# 👉 Used to detect:
+
+# Deadlocks
+# Crashed apps
+# 🚦 Readiness Probe (Is container ready?)
+# readinessProbe:
+#   httpGet:
+#     path: /
+#     port: 80
+#   initialDelaySeconds: 40
+#   periodSeconds: 3
+# ✅ Meaning
+# After 40 seconds, Kubernetes checks:
+# 👉 http://<pod-ip>:80/
+# Every 3 seconds
+# 🔥 Behavior
+# If check fails
+# 👉 Pod is removed from Service (no traffic)
+# ❌ But NOT restarted
+# ⚖️ Liveness vs Readiness (Important)
+# Feature	Liveness Probe	Readiness Probe
+# Purpose	Check if app is alive	Check if app is ready
+# Failure action	Restart container 🔁	Stop traffic 🚫
+# Use case	Crash/hang detection	Startup / overload handling
